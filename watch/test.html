@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手表版预览 - 蛋仔盲盒</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .info {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #FF6B9D;
+            margin-top: 0;
+        }
+        
+        .watch-frame {
+            width: 360px;
+            height: 400px;
+            background: #333;
+            border-radius: 40px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .watch-screen {
+            width: 320px;
+            height: 360px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: white;
+            position: relative;
+        }
+        
+        iframe {
+            width: 320px;
+            height: 360px;
+            border: none;
+            border-radius: 20px;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .btn {
+            background: #FF6B9D;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background: #FF5588;
+        }
+        
+        .size-info {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .tips {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .tips h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        
+        .tips ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .tips li {
+            margin: 5px 0;
+            color: #856404;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>🥚 蛋仔盲盒 - 小天才手表版预览</h1>
+        <p>这是一个模拟小天才手表屏幕的预览页面（320×360 方形屏幕）。实际手表屏幕可能略有不同。</p>
+        
+        <div class="tips">
+            <h3>📱 如何在小天才手表上打开：</h3>
+            <ul>
+                <li><strong>方法1：扫码</strong> - 生成二维码，手表扫一扫打开</li>
+                <li><strong>方法2：发链接</strong> - 家长APP发送链接给手表</li>
+                <li><strong>方法3：语音输入</strong> - 对手表说"打开浏览器"，输入网址</li>
+                <li><strong>方法4：添加到桌面</strong> - 打开后选择"添加到主屏幕"</li>
+            </ul>
+            
+            <h3>🎮 新功能：左右滑动切换页面</h3>
+            <ul>
+                <li><strong>向左滑</strong> - 从抽取页面滑到收藏页面</li>
+                <li><strong>向右滑</strong> - 从收藏页面滑回抽取页面</li>
+                <li><strong>点击指示器</strong> - 点击底部圆点快速切换</li>
+                <li><strong>鼠标拖拽</strong> - 在电脑上可以用鼠标拖拽测试</li>
+            </ul>
+            
+            <h3>🚀 部署步骤：</h3>
+            <ol>
+                <li>将 <code>watch</code> 文件夹部署到服务器（推荐 Vercel 或 GitHub Pages）</li>
+                <li>获得网址后生成二维码</li>
+                <li>用手表扫码打开</li>
+                <li>添加到手表桌面，像APP一样使用</li>
+            </ol>
+            
+            <p>详细说明请查看：<code>watch/滑动操作说明.md</code>、<code>watch/README.md</code> 和 <code>watch/DEPLOY.md</code></p>
+        </div>
+    </div>
+    
+    <div class="watch-frame">
+        <div class="watch-screen">
+            <iframe src="index.html"></iframe>
+        </div>
+    </div>
+    
+    <div class="size-info">
+        模拟屏幕尺寸：320×360 像素（方形，圆角）
+    </div>
+    
+    <div class="controls">
+        <button class="btn" onclick="location.reload()">🔄 刷新</button>
+        <button class="btn" onclick="window.open('index.html', '_blank')">📱 全屏查看</button>
+        <button class="btn" onclick="testSwipe()">👆 测试滑动</button>
+        <button class="btn" onclick="clearData()">🗑️ 清除数据</button>
+    </div>
+    
+    <script>
+        function clearData() {
+            if (confirm('确定要清除游戏数据吗？')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+        
+        function testSwipe() {
+            alert('💡 滑动测试提示：\n\n' +
+                  '1. 在手表屏幕上向左/右拖动鼠标\n' +
+                  '2. 或点击底部的圆点切换页面\n' +
+                  '3. 在真实手表上用手指左右滑动\n\n' +
+                  '向左滑 → 查看收藏\n' +
+                  '向右滑 → 返回抽取');
+        }
+    </script>
+</body>
+</html>

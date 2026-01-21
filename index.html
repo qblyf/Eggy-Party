@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蛋仔派对抽盲盒 - 收集你的可爱蛋仔</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="particles-bg" id="particlesBg"></div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1 class="main-title">
+                    <span class="title-icon">🥚</span>
+                    <span class="title-text">蛋仔派对抽盲盒</span>
+                    <span class="title-icon">🎉</span>
+                </h1>
+                <p class="subtitle">收集所有可爱的蛋仔角色，开启你的欢乐派对！</p>
+            </div>
+            <div class="header-decoration">
+                <div class="cloud cloud1">☁️</div>
+                <div class="cloud cloud2">☁️</div>
+                <div class="star star1">🌟</div>
+                <div class="star star2">✨</div>
+            </div>
+        </header>
+
+        <main>
+            <section class="game-area">
+                <div class="blind-box-section">
+                    <div class="section-header">
+                        <h2>开始你的欢乐派对</h2>
+                        <p>点击盲盒，发现新的蛋仔朋友！</p>
+                    </div>
+
+                    <div class="blind-box-container">
+                        <div class="magic-circle"></div>
+                        <div class="blind-box" id="blindBox">
+                            <div class="box-glow"></div>
+                            <div class="box-lid">
+                                <div class="lid-decoration"></div>
+                            </div>
+                            <div class="box-body">
+                                <div class="body-decoration"></div>
+                                <span class="box-text">✨ 点击抽取 ✨</span>
+                            </div>
+                            <div class="box-shadow"></div>
+                        </div>
+                    </div>
+
+                    <div class="controls-section">
+                        <button class="draw-btn" id="drawBtn">
+                            <span class="btn-icon">🎁</span>
+                            <span class="btn-text">抽取盲盒</span>
+                        </button>
+                        <div class="draw-info">
+                            <div class="info-item">
+                                <span class="info-label">已抽取</span>
+                                <span class="info-value" id="drawCount">0</span>
+                                <span class="info-unit">次</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">幸运值</span>
+                                <span class="info-value" id="luckyValue">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-display" id="resultDisplay">
+                    <div class="section-header">
+                        <h2>恭喜你！</h2>
+                        <p>你获得了新的蛋仔角色</p>
+                    </div>
+                    <div class="mlp-card result-card" id="resultCard">
+                        <div class="result-glow"></div>
+                        <div class="mlp-card-header">Eggy Party</div>
+                        <div class="mlp-card-image" id="resultImage"></div>
+                        <div class="mlp-card-name" id="resultName"></div>
+                        <div class="mlp-card-rarity" id="resultRarity"></div>
+                        <div class="result-stars" id="resultStars"></div>
+                        <div class="result-sparkles">
+                            <span class="sparkle sparkle1">✨</span>
+                            <span class="sparkle sparkle2">💫</span>
+                            <span class="sparkle sparkle3">⭐</span>
+                        </div>
+                    </div>
+                    <div class="result-description" id="resultDescription"></div>
+                </div>
+            </section>
+
+            <section class="collection-section">
+                <div class="section-header">
+                    <h2>🌟 我的蛋仔收藏 🌟</h2>
+                    <p>每一个蛋仔都是独特的欢乐存在</p>
+                </div>
+
+                <div class="collection-stats">
+                    <div class="stat-card stat-collected">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="totalCollected">0</span>
+                            <span class="stat-label">总收集数</span>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-unique">
+                        <div class="stat-icon">🥚</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="totalUnique">0</span>
+                            <span class="stat-label">不同角色</span>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-completion">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="completionRate">0%</span>
+                            <span class="stat-label">完成度</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collection-filters">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="common">普通</button>
+                    <button class="filter-btn" data-filter="rare">稀有</button>
+                    <button class="filter-btn" data-filter="super-rare">超稀有</button>
+                    <button class="filter-btn" data-filter="legendary">传说</button>
+                </div>
+
+                <div class="collection-grid" id="collectionGrid">
+                    <!-- 动态生成的收藏卡片 -->
+                </div>
+            </section>
+        </main>
+
+        <section class="game-info">
+            <div class="info-card">
+                <h3>🎯 游戏规则</h3>
+                <div class="rules-list">
+                    <div class="rule-item common">
+                        <span class="rarity-icon">🌟</span>
+                        <div class="rule-content">
+                            <span class="rarity-name">普通角色</span>
+                            <span class="rarity-chance">60% 概率</span>
+                        </div>
+                    </div>
+                    <div class="rule-item rare">
+                        <span class="rarity-icon">⭐</span>
+                        <div class="rule-content">
+                            <span class="rarity-name">稀有角色</span>
+                            <span class="rarity-chance">30% 概率</span>
+                        </div>
+                    </div>
+                    <div class="rule-item super-rare">
+                        <span class="rarity-icon">💫</span>
+                        <div class="rule-content">
+                            <span class="rarity-name">超稀有角色</span>
+                            <span class="rarity-chance">9% 概率</span>
+                        </div>
+                    </div>
+                    <div class="rule-item legendary">
+                        <span class="rarity-icon">✨</span>
+                        <div class="rule-content">
+                            <span class="rarity-name">传说角色</span>
+                            <span class="rarity-chance">1% 概率</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>💡 收集提示</h3>
+                <ul>
+                    <li>每天都有机会获得不同的角色</li>
+                    <li>传说��色非常稀有，需要耐心</li>
+                    <li>每个角色都有独特的魔法属性</li>
+                    <li>完成收集解锁神秘奖励</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p>🎉 用欢乐与可爱创造美好的世界 🎉</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,698 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --primary: #FF6B9D;
+    --secondary: #FFD700;
+    --rare: #87CEEB;
+    --super-rare: #9370DB;
+    --legendary: #FF8C00;
+    --bg: linear-gradient(135deg, #FFD700 0%, #FF6B9D 50%, #FFB6C1 100%);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #333;
+    overflow: hidden;
+    font-size: 14px;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* 滑动容器 */
+.swipe-container {
+    display: flex;
+    width: 200%;
+    height: 100vh;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+.swipe-container.show-collection {
+    transform: translateX(-50%);
+}
+
+/* 页面 */
+.page {
+    width: 50%;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.page-content {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    min-height: 100vh;
+}
+
+/* 头部 */
+header {
+    text-align: center;
+    padding: 15px 0 10px;
+    color: white;
+}
+
+header h1 {
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    margin: 0;
+}
+
+/* 统计信息 */
+.stats {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.stat-item {
+    flex: 1;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 10px 5px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+    display: block;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+/* 盲盒区域 */
+.blind-box-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    min-height: 180px;
+}
+
+.blind-box {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #FF6B9D, #FFB6C1);
+    border-radius: 20px;
+    border: 4px solid white;
+    box-shadow: 0 8px 20px rgba(255,107,157,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.blind-box:active {
+    transform: scale(0.95);
+}
+
+.blind-box.opening {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0) rotate(0); }
+    25% { transform: translateX(-8px) rotate(-5deg); }
+    75% { transform: translateX(8px) rotate(5deg); }
+}
+
+.box-icon {
+    font-size: 48px;
+    margin-bottom: 5px;
+}
+
+.box-text {
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* 抽取按钮 */
+.draw-btn {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto 20px;
+    display: block;
+    background: linear-gradient(135deg, #FF6B9D, #FF69B4);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255,107,157,0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.draw-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(255,107,157,0.3);
+}
+
+.draw-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 结果卡片 */
+.result-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.5s ease;
+}
+
+.result-card.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.card-image {
+    font-size: 64px;
+    margin-bottom: 10px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-image img {
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 8px;
+}
+
+.card-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.card-rarity {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.card-count {
+    font-size: 12px;
+    color: #666;
+}
+
+.rarity-common { color: #95a5a6; }
+.rarity-rare { color: #3498db; }
+.rarity-super-rare { color: #9b59b6; }
+.rarity-legendary { 
+    color: #f39c12;
+    text-shadow: 0 0 8px rgba(243,156,18,0.5);
+}
+
+/* 筛选标签 */
+.filter-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 5px;
+}
+
+.filter-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    flex-shrink: 0;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 15px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* 收藏网格 */
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.collection-item {
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+    border-radius: 10px;
+    border: 2px solid white;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.collection-item:active {
+    transform: scale(0.95);
+}
+
+.collection-item.rarity-common {
+    background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+}
+
+.collection-item.rarity-rare {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+}
+
+.collection-item.rarity-super-rare {
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+}
+
+.collection-item.rarity-legendary {
+    background: linear-gradient(135deg, #fdcb6e, #e17055);
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 8px rgba(253,203,110,0.5); }
+    50% { box-shadow: 0 0 15px rgba(253,203,110,0.8); }
+}
+
+.collection-item.undiscovered {
+    background: linear-gradient(135deg, #636e72, #2d3436);
+    opacity: 0.5;
+}
+
+.item-image {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.item-image img {
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 5px;
+}
+
+.item-name {
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    margin-bottom: 2px;
+}
+
+.item-count {
+    font-size: 9px;
+    color: rgba(255,255,255,0.9);
+}
+
+.undiscovered .item-name,
+.undiscovered .item-count {
+    color: #b2bec3;
+}
+
+/* 新获得标记 */
+.new-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #4CAF50;
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* 成就提示 */
+.achievement {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255,215,0,0.5);
+    z-index: 1000;
+    animation: slideDown 3s ease-out forwards;
+}
+
+@keyframes slideDown {
+    0% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    10% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    90% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+/* 滑动提示 */
+.swipe-hint {
+    text-align: center;
+    padding: 15px 0;
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    animation: hintPulse 2s ease-in-out infinite;
+}
+
+.hint-arrow {
+    font-size: 16px;
+    animation: arrowSlide 1.5s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+@keyframes arrowSlide {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+}
+
+/* 页面指示器 */
+.page-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+    background: rgba(0,0,0,0.3);
+    padding: 8px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.page-indicator .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.page-indicator .dot.active {
+    background: white;
+    width: 20px;
+    border-radius: 4px;
+}
+
+/* 收藏页面样式 */
+.page-collection {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.collection-stats-mini {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.stat-mini {
+    flex: 1;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat-mini-value {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    color: #667eea;
+    margin-bottom: 2px;
+}
+
+.stat-mini-label {
+    display: block;
+    font-size: 10px;
+    color: #666;
+}
+
+/* 收藏网格优化 */
+.collection-grid {
+    margin-bottom: 80px;
+}
+
+/* 抽取页面背景 */
+.page-draw {
+    background: var(--bg);
+}
+
+/* 结果弹窗 */
+.result-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9999 !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.result-modal.show {
+    display: flex !important;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    z-index: 10000 !important;
+    animation: modalSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px 20px 20px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    min-width: 260px;
+    max-width: 300px;
+    position: relative;
+}
+
+.modal-card .card-image {
+    font-size: 80px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    animation: cardImageBounce 0.6s ease 0.3s;
+}
+
+.modal-card .card-image img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 10px;
+}
+
+.modal-card .card-name {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.modal-card .card-rarity {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.modal-card .card-count {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.modal-card .result-stars {
+    font-size: 18px;
+    margin-bottom: 15px;
+    animation: starsShine 1s ease 0.5s;
+}
+
+.modal-close-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.modal-close-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* 弹窗动画 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes cardImageBounce {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes starsShine {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* 新获得标记（弹窗版） */
+.modal-card .new-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #4CAF50;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+    animation: newBadgePop 0.5s ease 0.6s;
+}
+
+@keyframes newBadgePop {
+    0% { transform: scale(0) rotate(-45deg); }
+    50% { transform: scale(1.3) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+/* 传说特效（弹窗版） */
+.modal-card.legendary {
+    background: linear-gradient(135deg, #fdcb6e, #e17055, #fd79a8);
+    animation: legendaryGlow 2s ease-in-out infinite;
+}
+
+.modal-card.legendary .card-name,
+.modal-card.legendary .card-rarity,
+.modal-card.legendary .card-count {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes legendaryGlow {
+    0%, 100% {
+        box-shadow: 0 10px 40px rgba(253, 203, 110, 0.6);
+    }
+    50% {
+        box-shadow: 0 10px 50px rgba(253, 203, 110, 0.9), 0 0 30px rgba(253, 203, 110, 0.5);
+    }
+}
+
+
+/* 弹窗中的稀有度颜色 */
+.modal-card .rarity-common { color: #95a5a6; }
+.modal-card .rarity-rare { color: #3498db; }
+.modal-card .rarity-super-rare { color: #9b59b6; }
+.modal-card .rarity-legendary { 
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+}

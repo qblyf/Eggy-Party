@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FF6B9D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="蛋仔盲盒">
+    <title>蛋仔盲盒 - 小天才版</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 滑动容器 -->
+    <div class="swipe-container" id="swipeContainer">
+        <!-- 页面1：抽取页面 -->
+        <div class="page page-draw active" id="pageDraw">
+            <div class="page-content">
+                <!-- 头部 -->
+                <header>
+                    <h1>🥚 蛋仔盲盒</h1>
+                </header>
+
+                <!-- 统计信息 -->
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">已抽</span>
+                        <span class="stat-value" id="drawCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">收集</span>
+                        <span class="stat-value" id="totalUnique">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">完成</span>
+                        <span class="stat-value" id="completionRate">0%</span>
+                    </div>
+                </div>
+
+                <!-- 盲盒区域 -->
+                <div class="blind-box-area">
+                    <div class="blind-box" id="blindBox">
+                        <div class="box-icon">🎁</div>
+                        <div class="box-text">点击抽取</div>
+                    </div>
+                </div>
+
+                <!-- 抽取按钮 -->
+                <button class="draw-btn" id="drawBtn">
+                    <span class="btn-text">抽取盲盒</span>
+                </button>
+
+                <!-- 滑动提示 -->
+                <div class="swipe-hint">
+                    <span class="hint-text">← 滑动查看收藏</span>
+                    <span class="hint-arrow">→</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面2：收藏页面 -->
+        <div class="page page-collection" id="pageCollection">
+            <div class="page-content">
+                <!-- 头部 -->
+                <header>
+                    <h1>📦 我的收藏</h1>
+                </header>
+
+                <!-- 统计卡片 -->
+                <div class="collection-stats-mini">
+                    <div class="stat-mini">
+                        <span class="stat-mini-value" id="totalCollected2">0</span>
+                        <span class="stat-mini-label">总数</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-mini-value" id="totalUnique2">0</span>
+                        <span class="stat-mini-label">种类</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-mini-value" id="completionRate2">0%</span>
+                        <span class="stat-mini-label">完成</span>
+                    </div>
+                </div>
+
+                <!-- 筛选标签 -->
+                <div class="filter-tabs">
+                    <button class="tab-btn active" data-filter="all">全部</button>
+                    <button class="tab-btn" data-filter="common">普通</button>
+                    <button class="tab-btn" data-filter="rare">稀有</button>
+                    <button class="tab-btn" data-filter="super-rare">超稀有</button>
+                    <button class="tab-btn" data-filter="legendary">传说</button>
+                </div>
+
+                <!-- 收藏网格 -->
+                <div class="collection-grid" id="collectionGrid"></div>
+
+                <!-- 滑动提示 -->
+                <div class="swipe-hint">
+                    <span class="hint-arrow">←</span>
+                    <span class="hint-text">滑动返回抽取 →</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面指示器 -->
+    <div class="page-indicator">
+        <span class="dot active" data-page="0"></span>
+        <span class="dot" data-page="1"></span>
+    </div>
+
+    <!-- 结果弹窗 -->
+    <div class="result-modal" id="resultModal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content" id="modalContent">
+            <div class="modal-card">
+                <div class="card-image" id="resultImage">❓</div>
+                <div class="card-name" id="resultName">未知蛋仔</div>
+                <div class="card-rarity" id="resultRarity">???</div>
+                <div class="card-count" id="resultCount"></div>
+                <div class="result-stars" id="resultStars"></div>
+            </div>
+            <button class="modal-close-btn" id="modalCloseBtn">确定</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

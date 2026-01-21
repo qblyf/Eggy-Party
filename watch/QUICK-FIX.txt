@@ -1,0 +1,99 @@
+🚨 弹窗不显示 - 快速修复
+
+如果点击抽取后看不到卡片，请按以下步骤操作：
+
+═══════════════════════════════════════════════════════════
+
+步骤1: 强制刷新浏览器
+  • Windows: Ctrl + Shift + R
+  • Mac: Cmd + Shift + R
+  • 或清除浏览器缓存
+
+═══════════════════════════════════════════════════════════
+
+步骤2: 打开浏览器控制台
+  • 按 F12
+  • 或右键 → 检查
+  • 切换到 Console 标签
+
+═══════════════════════════════════════════════════════════
+
+步骤3: 点击抽取，查看控制台输出
+
+应该看到:
+  ✓ showResult called 快乐蛋仔 false
+  ✓ Modal elements found, setting content...
+  ✓ Showing modal...
+  ✓ Modal classes: result-modal show
+
+如果看到错误:
+  ✗ Modal content not found
+  ✗ Modal card not found
+  ✗ resultModal not found
+
+说明元素未正确加载。
+
+═══════════════════════════════════════════════════════════
+
+步骤4: 手动测试弹窗
+
+在控制台输入以下代码:
+
+document.getElementById('resultModal').classList.add('show');
+
+如果弹窗出现，说明 CSS 正常，问题在 JavaScript。
+如果弹窗不出现，说明 CSS 有问题。
+
+═══════════════════════════════════════════════════════════
+
+步骤5: 检查元素
+
+在控制台输入:
+
+console.log(document.getElementById('resultModal'));
+console.log(document.getElementById('modalContent'));
+
+应该都显示元素，不是 null。
+
+═══════════════════════════════════════════════════════════
+
+步骤6: 使用测试页面
+
+打开 test-modal.html 测试:
+  • 双击 watch/test-modal.html
+  • 点击"显示弹窗"按钮
+  • 如果能看到弹窗，说明 CSS 和 HTML 结构正确
+
+═══════════════════════════════════════════════════════════
+
+最可能的原因:
+
+1. 浏览器缓存 (最常见)
+   → 解决: Ctrl+Shift+R 强制刷新
+
+2. CSS 文件未加载
+   → 解决: 检查 style.css 是否存在
+   → 检查 <link> 标签是否正确
+
+3. JavaScript 错误
+   → 解决: 查看控制台错误信息
+
+4. Service Worker 缓存
+   → 解决: 在控制台运行:
+     navigator.serviceWorker.getRegistrations()
+       .then(r => r.forEach(reg => reg.unregister()));
+     然后刷新页面
+
+═══════════════════════════════════════════════════════════
+
+临时解决方案:
+
+如果仍然不行，在 script.js 的 showResult 方法开头添加:
+
+alert(`获得: ${pony.name}`);
+
+这样至少能看到抽取结果。
+
+═══════════════════════════════════════════════════════════
+
+99% 的情况下，强制刷新浏览器就能解决！

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>弹窗测试</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #FFD700, #FF6B9D);
+            min-height: 100vh;
+        }
+        
+        .test-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        /* 结果弹窗 */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-modal.show {
+            display: flex;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            z-index: 2001;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            min-width: 260px;
+            max-width: 300px;
+        }
+
+        .card-image {
+            font-size: 80px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .card-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .card-rarity {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #3498db;
+        }
+
+        .card-count {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .result-stars {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .modal-close-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>弹窗测试页面</h1>
+        <p>点击按钮测试弹窗是否正常显示</p>
+    </div>
+    
+    <button class="test-btn" onclick="showModal()">显示弹窗</button>
+    <button class="test-btn" onclick="hideModal()">隐藏弹窗</button>
+    <button class="test-btn" onclick="checkElements()">检查元素</button>
+    
+    <div id="log" style="background: white; padding: 10px; border-radius: 5px; margin-top: 20px; font-family: monospace; font-size: 12px;"></div>
+
+    <!-- 结果弹窗 -->
+    <div class="result-modal" id="resultModal">
+        <div class="modal-backdrop" id="modalBackdrop" onclick="hideModal()"></div>
+        <div class="modal-content" id="modalContent">
+            <div class="modal-card">
+                <div class="card-image" id="resultImage">😊</div>
+                <div class="card-name" id="resultName">快乐蛋仔</div>
+                <div class="card-rarity" id="resultRarity">普通</div>
+                <div class="card-count" id="resultCount">拥有 1 个</div>
+                <div class="result-stars" id="resultStars">⭐</div>
+            </div>
+            <button class="modal-close-btn" id="modalCloseBtn" onclick="hideModal()">确定</button>
+        </div>
+    </div>
+
+    <script>
+        function log(msg) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += msg + '<br>';
+            console.log(msg);
+        }
+        
+        function showModal() {
+            const modal = document.getElementById('resultModal');
+            if (modal) {
+                log('显示弹窗...');
+                modal.classList.add('show');
+                log('弹窗类名: ' + modal.className);
+                document.body.style.overflow = 'hidden';
+            } else {
+                log('错误: 找不到弹窗元素');
+            }
+        }
+        
+        function hideModal() {
+            const modal = document.getElementById('resultModal');
+            if (modal) {
+                log('隐藏弹窗...');
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            } else {
+                log('错误: 找不到弹窗元素');
+            }
+        }
+        
+        function checkElements() {
+            log('=== 检查元素 ===');
+            log('resultModal: ' + (document.getElementById('resultModal') ? '存在' : '不存在'));
+            log('modalBackdrop: ' + (document.getElementById('modalBackdrop') ? '存在' : '不存在'));
+            log('modalContent: ' + (document.getElementById('modalContent') ? '存在' : '不存在'));
+            log('resultImage: ' + (document.getElementById('resultImage') ? '存在' : '不存在'));
+            log('resultName: ' + (document.getElementById('resultName') ? '存在' : '不存在'));
+            
+            const modal = document.getElementById('resultModal');
+            if (modal) {
+                log('弹窗样式:');
+                const styles = window.getComputedStyle(modal);
+                log('  display: ' + styles.display);
+                log('  z-index: ' + styles.zIndex);
+                log('  position: ' + styles.position);
+            }
+        }
+        
+        // 页面加载后自动检查
+        window.addEventListener('load', () => {
+            log('页面加载完成');
+            checkElements();
+        });
+    </script>
+</body>
+</html>

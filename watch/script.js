@@ -96,13 +96,17 @@ class WatchBlindBox {
         let currentPage = 0;
         
         this.swipeContainer.addEventListener('touchstart', (e) => {
+            // 如果正在抽奖，禁止滑动
+            if (this.isDrawing) return;
+            
             startX = e.touches[0].clientX;
             isDragging = true;
             this.swipeContainer.style.transition = 'none';
         });
         
         this.swipeContainer.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
+            // 如果正在抽奖，禁止滑动
+            if (this.isDrawing || !isDragging) return;
             
             currentX = e.touches[0].clientX;
             const diff = currentX - startX;
@@ -116,7 +120,8 @@ class WatchBlindBox {
         });
         
         this.swipeContainer.addEventListener('touchend', (e) => {
-            if (!isDragging) return;
+            // 如果正在抽奖，禁止滑动
+            if (this.isDrawing || !isDragging) return;
             isDragging = false;
             
             const diff = currentX - startX;
@@ -145,6 +150,9 @@ class WatchBlindBox {
         let mouseDown = false;
         
         this.swipeContainer.addEventListener('mousedown', (e) => {
+            // 如果正在抽奖，禁止滑动
+            if (this.isDrawing) return;
+            
             startX = e.clientX;
             mouseDown = true;
             this.swipeContainer.style.transition = 'none';
@@ -152,7 +160,8 @@ class WatchBlindBox {
         });
         
         this.swipeContainer.addEventListener('mousemove', (e) => {
-            if (!mouseDown) return;
+            // 如果正在抽奖，禁止滑动
+            if (this.isDrawing || !mouseDown) return;
             
             currentX = e.clientX;
             const diff = currentX - startX;
@@ -165,7 +174,8 @@ class WatchBlindBox {
         });
         
         this.swipeContainer.addEventListener('mouseup', (e) => {
-            if (!mouseDown) return;
+            // 如果正在抽奖，禁止滑动
+            if (this.isDrawing || !mouseDown) return;
             mouseDown = false;
             
             const diff = currentX - startX;

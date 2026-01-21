@@ -256,7 +256,11 @@ class WatchBlindBox {
         
         // 动画
         this.blindBox.classList.add('opening');
-        this.resultCard.classList.remove('show');
+        
+        // 关闭之前的弹窗（如果有）
+        if (this.resultModal) {
+            this.resultModal.classList.remove('show');
+        }
         
         await this.sleep(600);
         
